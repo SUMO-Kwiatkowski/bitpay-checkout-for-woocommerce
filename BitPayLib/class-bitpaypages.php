@@ -21,7 +21,7 @@ class BitPayPages {
 
 	public function checkout_thank_you( int $order_id ): void {
 		global $woocommerce;
-		$order     = new \WC_Order( $order_id );
+		$order = new \WC_Order( $order_id );
 		if ( $order->get_payment_method() !== 'bitpay_checkout_gateway' ) {
 			return;
 		}

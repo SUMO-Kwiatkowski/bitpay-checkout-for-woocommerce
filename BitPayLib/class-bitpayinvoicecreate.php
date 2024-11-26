@@ -72,7 +72,7 @@ class BitPayInvoiceCreate {
 
 			$this->bitpay_checkout_insert_order_note( $order_id, $invoice_id );
 
-			wp_redirect( $bitpay_invoice->getUrl() ); // phpcs:ignore
+			wp_redirect( $bitpay_invoice->getURL() ); // phpcs:ignore
 			exit();
 		} catch ( BitPayException $e ) {
 			$this->bitpay_logger->execute( $e->getMessage(), 'NEW BITPAY INVOICE', false, true );

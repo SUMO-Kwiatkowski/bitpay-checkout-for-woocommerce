@@ -155,12 +155,6 @@ class WcGatewayBitpay extends \WC_Payment_Gateway {
 				),
 				'default'     => 'test',
 			),
-
-			'bitpay_checkout_slug'                      => array(
-				'title'       => __( 'Checkout Page', 'woocommerce' ),
-				'type'        => 'text',
-				'description' => __( 'If you have a different custom checkout page, enter the <b>page slug</b>. <br>ie. ' . get_home_url() . '/<b>checkout</b><br><br>View your pages <a target = "_blank" href  = "/wp-admin/edit.php?post_type=page">here</a>, your current checkout page should have <b>Checkout Page</b> next to the title.<br><br>Click the "quick edit" and copy and paste a custom slug here if needed.', 'woocommerce' ), // phpcs:ignore
-			),
 			'bitpay_custom_redirect'                    => array(
 				'title'       => __( 'Custom Redirect Page', 'woocommerce' ),
 				'type'        => 'text',
@@ -193,18 +187,14 @@ class WcGatewayBitpay extends \WC_Payment_Gateway {
 				),
 				'default'     => '1',
 			),
-			'bitpay_checkout_checkout_message'          => array(
-				'title'       => __( 'Checkout Message', 'woocommerce' ),
-				'type'        => 'textarea',
-				'description' => __( 'Insert your custom message for the <b>Order Received</b> page, so the customer knows that the order will not be completed until BitPay releases the funds.', 'woocommerce' ),
-				'default'     => 'Thank you.  We will notify you when BitPay has processed your transaction.',
-			),
+
 			'bitpay_checkout_error'                     => array(
 				'title'       => __( 'Error handling', 'woocommerce' ),
 				'type'        => 'text',
 				'description' => __( 'If there is an error with creating the invoice, enter the <b>page slug</b>. <br>ie. ' . get_home_url() . '/<b>error</b><br><br>View your pages <a target = "_blank" href  = "/wp-admin/edit.php?post_type=page">here</a>,.<br><br>Click the "quick edit" and copy and paste a custom slug here.', 'woocommerce' ), // phpcs:ignore
 
 			),
+
 			'bitpay_checkout_error_message'             => array(
 				'title'       => __( 'Error Message', 'woocommerce' ),
 				'type'        => 'textarea',

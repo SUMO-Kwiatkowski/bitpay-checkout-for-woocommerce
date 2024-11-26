@@ -114,12 +114,6 @@ class BitPayPaymentSettings {
 		return $this->get_bitpay_gateway_setting( 'bitpay_checkout_token_' . $suffix, null );
 	}
 
-	public function should_use_modal(): bool {
-		$option = $this->get_bitpay_gateway_setting( 'bitpay_checkout_flow' );
-
-		return 1 === (int) $option;
-	}
-
 	public function get_checkout_message(): string {
 		return $this->get_bitpay_gateway_setting( 'bitpay_checkout_checkout_message', '' );
 	}

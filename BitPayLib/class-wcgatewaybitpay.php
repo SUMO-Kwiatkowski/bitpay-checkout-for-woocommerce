@@ -156,16 +156,6 @@ class WcGatewayBitpay extends \WC_Payment_Gateway {
 				'default'     => 'test',
 			),
 
-			'bitpay_checkout_flow'                      => array(
-				'title'       => __( 'Checkout Flow', 'woocommerce' ),
-				'type'        => 'select',
-				'description' => __( 'If this is set to <b>Redirect</b>, then the customer will be redirected to <b>BitPay</b> to checkout, and return to the checkout page once the payment is made.<br>If this is set to <b>Modal</b>, the user will stay on <b>' . get_bloginfo( 'name', null ) . '</b> and complete the transaction.', 'woocommerce' ), // phpcs:ignore
-				'options'     => array(
-					'1' => 'Modal',
-					'2' => 'Redirect',
-				),
-				'default'     => '2',
-			),
 			'bitpay_checkout_slug'                      => array(
 				'title'       => __( 'Checkout Page', 'woocommerce' ),
 				'type'        => 'text',
@@ -174,12 +164,12 @@ class WcGatewayBitpay extends \WC_Payment_Gateway {
 			'bitpay_custom_redirect'                    => array(
 				'title'       => __( 'Custom Redirect Page', 'woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Set the full url  (ie. <i>https://yoursite.com/custompage</i>) if you would like the customer to be redirected to a custom page after completing theh purchase.  <b>Note: this will only work if the REDIRECT mode is used</b> ', 'woocommerce' ),
+				'description' => __( 'Set the full url  (ie. <i>https://yoursite.com/custompage</i>) if you would like the customer to be redirected to a custom page after completing their purchase.', 'woocommerce' ),
 			),
 			'bitpay_close_url'                          => array(
 				'title'       => __( 'Close URL', 'woocommerce' ),
 				'type'        => 'text',
-				'description' => __( 'Set the close url <br /><b>Note: this will only work if the REDIRECT mode is used</b> ', 'woocommerce' ),
+				'description' => __( 'Set the close url <br />', 'woocommerce' ),
 			),
 			'bitpay_checkout_mini'                      => array(
 				'title'       => __( 'Show in mini cart ', 'woocommerce' ),

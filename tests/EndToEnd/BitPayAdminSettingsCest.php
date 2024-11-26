@@ -21,19 +21,4 @@ class BitPayAdminSettingsCest {
         $i->selectBitPayPaymentMethod();
         $i->seeInSource($expectedDescription);
     }
-
-    public function it_should_use_custom_checkout_message(EndToEndTester $i): void {
-        $expectedText = 'Thank you. We will notify you when BitPay has processed your transaction. ' . rand();
-
-        $i->loginAsAdmin();
-        $i->amOnBitPayAdminSettings();
-        $i->resetBitPayAdminSettings();
-        $i->selectOption('select#woocommerce_bitpay_checkout_gateway_bitpay_checkout_flow', 'Modal');
-        $i->fillField('#woocommerce_bitpay_checkout_gateway_bitpay_checkout_checkout_message', $expectedText);
-        $i->saveBitPayAdminSettings();
-        $i->prepareDataToMakeAnOrder();
-        $i->placeOrder();
-        $i->wait(5);
-        $i->seeInSource($expectedText);
-    }
 }

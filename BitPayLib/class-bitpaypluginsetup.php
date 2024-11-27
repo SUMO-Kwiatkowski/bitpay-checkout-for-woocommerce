@@ -25,6 +25,8 @@ class BitPayPluginSetup {
 	private BitPayPaymentSettings $bitpay_payment_settings;
 	private BitPayInvoiceCreate $bitpay_invoice_create;
 	private BitPayCheckoutTransactions $bitpay_checkout_transactions;
+	private BitPayCreateOrder $bitpay_create_order;
+	private BitPaySupportPackage $bitpay_support_package;
 
 	public function __construct() {
 		$this->bitpay_payment_settings      = new BitPayPaymentSettings();
@@ -32,13 +34,21 @@ class BitPayPluginSetup {
 		$cart                               = new BitPayCart();
 		$logger                             = new BitPayLogger();
 		$wordpress_helper                   = new BitPayWordpressHelper();
+		$webhook_verifier                   = new BitPayWebhookVerifier();
 		$this->bitpay_checkout_transactions = new BitPayCheckoutTransactions( $wordpress_helper );
-		$this->bitpay_ipn_process           = new BitPayIpnProcess( $this->bitpay_checkout_transactions, $factory, $wordpress_helper, $logger );
+		$this->bitpay_ipn_process           = new BitPayIpnProcess( $this->bitpay_checkout_transactions, $factory, $wordpress_helper, $logger, $webhook_verifier, $this->bitpay_payment_settings );
 		$this->bitpay_cancel_order          = new BitPayCancelOrder( $cart, $this->bitpay_checkout_transactions, $logger );
 		$this->bitpay_invoice_create        = new BitPayInvoiceCreate(
 			$factory,
 			new BitPayInvoiceFactory( $this->bitpay_payment_settings, $wordpress_helper ),
 			$this->bitpay_checkout_transactions,
+			$wordpress_helper,
+			$logger
+		);
+		$this->bitpay_create_order          = new BitPayCreateOrder(
+			$this->bitpay_payment_settings
+		);
+		$this->bitpay_support_package       = new BitPaySupportPackage(
 			$wordpress_helper,
 			$logger
 		);
@@ -58,6 +68,8 @@ class BitPayPluginSetup {
 		add_filter( 'woocommerce_payment_gateways', array( $this, 'wc_bitpay_checkout_add_to_gateways' ) );
 		add_filter( 'woocommerce_order_button_html', array( $this, 'bitpay_checkout_replace_order_button_html' ), 10, 2 );
 		add_action( 'woocommerce_blocks_loaded', array( $this, 'register_payment_block' ) );
+		add_action( 'woocommerce_new_order', array( $this, 'bitpay_create_order' ) );
+		add_action( 'woocommerce_update_order', array( $this, 'bitpay_create_order' ) );
 
 		// http://<host>/wp-json/bitpay/ipn/status url.
 		// http://<host>/wp-json/bitpay/cartfix/restore url.
@@ -80,6 +92,17 @@ class BitPayPluginSetup {
 						'methods'             => 'POST,GET',
 						'callback'            => array( $this, 'cancel_order' ),
 						'permission_callback' => '__return_true',
+					)
+				);
+				register_rest_route(
+					'bitpay/site',
+					'/health-status',
+					array(
+						'methods'             => 'GET',
+						'callback'            => array( $this->bitpay_support_package, 'get_zip' ),
+						'permission_callback' => function () {
+							return current_user_can( 'manage_woocommerce' );
+						},
 					)
 				);
 			}
@@ -220,5 +243,9 @@ class BitPayPluginSetup {
 			},
 			5
 		);
+	}
+
+	public function bitpay_create_order( int $order_id ): void {
+		$this->bitpay_create_order->execute( $order_id );
 	}
 }
